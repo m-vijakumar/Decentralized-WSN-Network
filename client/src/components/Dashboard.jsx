@@ -21,11 +21,27 @@ export default function Dashboard(props) {
       props.history.push("/login");
     }
   };
+  const runExample = async () => {
+    // const { accounts, contract } = this.state;
 
+    // Stores a given value, 5 by default.
+    // await contract.methods.addvalue(40).send({ from: accounts[0], gas: 22000 });
+    console.log(props.account, props.contract);
+    // Get the value from the contract to prove it worked.
+    const response = await props.contract.methods.getvalue().call();
+
+    // Update state with the result.
+    // console.log(account, contract);
+    console.log(response);
+    // this.setState({ storageValue: response });
+  };
   useEffect(() => {
     // console.log("sssss")
     // userlog();
+
     setSpinner(false);
+
+
   }, []);
   const data = {
     nodes: [
@@ -77,7 +93,7 @@ export default function Dashboard(props) {
       <div>
         <Header />
         <div className="App">
-          <h1>Network</h1>
+          <h1>{console.log(props)}</h1>
           <button className="btn ">
             <a href="/add/ordinarynode">Generate New Base Station Node</a>
           </button>
@@ -91,11 +107,12 @@ export default function Dashboard(props) {
             id="graph-id" // id is mandatory
             data={data}
             config={myConfig}
-            // onClickNode={onClickNode}
-            // onClickLink={onClickLink}
+          // onClickNode={onClickNode}
+          // onClickLink={onClickLink}
           />
           ;
         </div>
+        <button onClick={runExample}>onclick</button>
       </div>
     );
   }
