@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import {Link ,withRouter } from 'react-router-dom'
+import getWeb3 from "../getWeb3";
+
+import BaseStationContract from "../contracts/BaseStations.json";
+import ClusterHeadNodeContrat from "../contracts/ClusterHeadNode.json"
 
 import { Graph } from "react-d3-graph";
 import Header from "./Header";
@@ -21,28 +25,33 @@ export default function Dashboard(props) {
       props.history.push("/login");
     }
   };
+
   const runExample = async () => {
-    // const { accounts, contract } = this.state;
 
-    // Stores a given value, 5 by default.
-    // await contract.methods.addvalue(40).send({ from: accounts[0], gas: 22000 });
+    await props.contract.methods.addvalue(40).send({ from: props.account[0], gas: 22000 });
     console.log(props.account, props.contract);
-    // Get the value from the contract to prove it worked.
     const response = await props.contract.methods.getvalue().call();
-
-    // Update state with the result.
-    // console.log(account, contract);
     console.log(response);
-    // this.setState({ storageValue: response });
   };
-  useEffect(() => {
-    // console.log("sssss")
-    // userlog();
 
+  useEffect(() => {
     setSpinner(false);
 
 
   }, []);
+
+  // useEffect(() => {
+
+  //   console.log(contract, account)
+  // }, [web3, contract, account])
+  const getNetwork = async () => {
+
+    await props.contract.methods.addBaseStation('bs1').send({ from: props.account[0], gas: 160510 });
+    const res = await props.contract.methods.getBaseStations().call();
+    console.log(res)
+  }
+
+
   const data = {
     nodes: [
       { id: "BS1", color: "red", size: 700 },
@@ -93,7 +102,7 @@ export default function Dashboard(props) {
       <div>
         <Header />
         <div className="App">
-          <h1>{console.log(props)}</h1>
+          <h1>Network</h1>
           <button className="btn ">
             <a href="/add/ordinarynode">Generate New Base Station Node</a>
           </button>
@@ -112,7 +121,7 @@ export default function Dashboard(props) {
           />
           ;
         </div>
-        <button onClick={runExample}>onclick</button>
+        <button onClick={getNetwork}>onclick</button>
       </div>
     );
   }

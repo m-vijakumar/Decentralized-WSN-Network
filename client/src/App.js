@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
+import BaseStationContract from "./contracts/BaseStations.json"
 import getWeb3 from "./getWeb3";
 
 import "./App.css";
@@ -17,22 +18,6 @@ export default function App() {
   const [contract, setContract] = useState();
   const [web3, setWeb3] = useState();
 
-  const runExample = async () => {
-    // const { accounts, contract } = this.state;
-
-    // Stores a given value, 5 by default.
-    // await contract.methods.addvalue(40).send({ from: accounts[0], gas: 22000 });
-    console.log(account, contract);
-    // Get the value from the contract to prove it worked.
-    const response = await contract.methods.getvalue().call();
-
-    // Update state with the result.
-    console.log(account, contract);
-    console.log(response);
-    // this.setState({ storageValue: response });
-  };
-
-
   const init = async () => {
     try {
       // Get network provider and web3 instance.
@@ -46,9 +31,10 @@ export default function App() {
       const deployedNetwork = await SimpleStorageContract.networks[networkId];
       const instance = await new web3.eth.Contract(
         SimpleStorageContract.abi,
+        // BaseStationContract.abi,
         deployedNetwork && deployedNetwork.address
       );
-
+      console.log(instance)
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
       setWeb3(web3);
@@ -73,32 +59,18 @@ export default function App() {
     init()
   }, [])
 
-  // useEffect(() => {
-
-  //   const load = async () => {
-
-  //   }
-
-  //   if (typeof web3 !== 'undefined'
-  //     && typeof account !== 'undefined'
-  //     && typeof contract !== 'undefined') {
-  //     load();
-  //   }
-
-  // }, [web3, account, contract])
-
   if (!web3) {
     return <div>Loading Web3, accounts, and contract...</div>;
   } else {
     return (
       <div className="App">
         <Router>
-          <Route exact path="/" component={Home} web3={account, contract} />
-          <Route exact path="/login" component={Login} web3={account, contract} />
-          <Route exact path="/register" component={Register} web3={account, contract} />
-          <Route exact path="/dashboard" component={() => <Dashboard account={account} contract={contract} />} />
-          <Route exact path="/add/ordinarynode" component={OrdinaryNode} web3={account, contract} />
-          <Route exact path="/add/clusternode" component={ClusterNode} web3={account, contract} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/dashboard" component={() => <Dashboard account={account} contract={contract} web3={web3} />} />
+          <Route exact path="/add/ordinarynode" component={() => <OrdinaryNode account={account} contract={contract} />} />
+          <Route exact path="/add/clusternode" component={() => <ClusterNode account={account} contract={contract} />} />
         </Router>
       </div>
     );
