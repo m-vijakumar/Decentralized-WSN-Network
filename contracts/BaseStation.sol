@@ -1,26 +1,39 @@
-// SPDX-License-Identifier: MIT
 pragma solidity >=0.4.21 <0.7.0;
+
 pragma experimental ABIEncoderV2;
-
-
+  
 contract ClusterHeadNode {
 
-  
-  mapping(string => string[]) headnodes;
-
-  function addClusterNode() public {
+  struct ClusterNode {
       
-        // headnodes[] ;
+      mapping(string => string[]) ordinarynodes;
+  }
+  mapping(string =>  mapping(string => string[])) clusternodes;
+
+
+
+  function addClusterNode(string memory  _basename , string memory _clustername) internal {
+      
+        clusternodes[_basename][_clustername];
         
     }
     
-    function getClusterNodes(string memory _name) public view returns(string[] memory){
-        return headnodes[_name];
+
+  function addOrdinayNode(string memory  _basename , string memory _clustername, string memory  _devicename)public {
+      clusternodes[_basename][_clustername].push(_devicename);
+  }
+    
+    function getOrdinaynode(string memory _name , string memory _clustername ) public returns(string[] memory ){
+        return clusternodes[_name][_clustername];
     }
+    
+    
 
 }
 
-contract BaseStations is ClusterHeadNode {
+
+
+contract BaseStation is ClusterHeadNode {
 
   struct BaseStation {
       
@@ -29,10 +42,11 @@ contract BaseStations is ClusterHeadNode {
   }
   mapping(string => BaseStation) basestations;
 
+
   string[] allbasestations;
   
   function addBaseStation(string memory _name) public {
-        basestations[_name].ClusterHeadNodes.push('ch1');
+        basestations[_name];
         allbasestations.push(_name);
         
     }
@@ -60,29 +74,16 @@ contract BaseStations is ClusterHeadNode {
                 }
             }
              basestations[_basename].ClusterHeadNodes.push(_clustername);
+             addClusterNode(_basename, _clustername);
         }else{
             revert("basestations not exist");
         }
     }
+    
+    function getClusterNodes(string memory _name) public returns(string[] memory ){
+        return basestations[_name].ClusterHeadNodes;
+    }
+    
 
 }
 
-contract SimpleStorage is BaseStations {
-  uint storedData;
-  uint[] public arr = [20,30,40];
-
-  function addvalue(uint x) public{
-    arr.push(x);
-  }
-
-  function getvalue() public view returns(uint[] memory ){
-    return arr;
-  }
-  function set(uint x) public {
-    storedData = x;
-  }
-
-  function get() public view returns (uint) {
-    return storedData;
-  }
-}

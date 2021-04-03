@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 // import {Link ,withRouter } from 'react-router-dom'
-import getWeb3 from "../getWeb3";
-
-import BaseStationContract from "../contracts/BaseStations.json";
-import ClusterHeadNodeContrat from "../contracts/ClusterHeadNode.json"
 
 import { Graph } from "react-d3-graph";
 import Header from "./Header";
@@ -12,6 +8,8 @@ import { Button } from "react-bootstrap";
 export default function Dashboard(props) {
   // const [userData,setUserData]=useState({});
   const [isSpinner, setSpinner] = useState(true);
+  const [nodes, setNodes] = useState([]);
+  const [links, setLinks] = useState([]);
 
   const userlog = async () => {
     try {
@@ -37,7 +35,6 @@ export default function Dashboard(props) {
   useEffect(() => {
     setSpinner(false);
 
-
   }, []);
 
   // useEffect(() => {
@@ -46,29 +43,39 @@ export default function Dashboard(props) {
   // }, [web3, contract, account])
   const getNetwork = async () => {
 
-    await props.contract.methods.addBaseStation('bs1').send({ from: props.account[0], gas: 160510 });
-    const res = await props.contract.methods.getBaseStations().call();
-    console.log(res)
+
+    await props.contract.methods.getBaseStations().call()
+      .then(async (res) => {
+
+        res.map(async (basename) => {
+
+          setNodes(nodes => [...nodes, { id: basename, color: "red", size: 700 }])
+
+          await props.contract.methods.getClusterNodes(basename).call()
+            .then(async (result) => {
+              result.map((clustername) => {
+                console.log("clustername", clustername)
+                console.log("basename", clustername)
+
+                setNodes(nodes => [...nodes, { id: basename + "  " + clustername, color: "green", size: 500 }])
+                setLinks(links => [...links, { source: basename, target: basename + "  " + clustername }])
+
+              })
+
+            })
+        })
+
+        for (let index = 1; index < res.length; index++) {
+          setLinks(links => [...links, { source: res[index - 1], target: res[index] }])
+
+        }
+
+      })
+
+
+
+
   }
-
-
-  const data = {
-    nodes: [
-      { id: "BS1", color: "red", size: 700 },
-      { id: "BS2", color: "red", size: 700 },
-      { id: "CH1", color: "green", size: 500 },
-      { id: "CH2", color: "green", size: 500 },
-      { id: "OD1" },
-      { id: "OD2" },
-    ],
-    links: [
-      { source: "CH1", target: "OD1" },
-      { source: "CH1", target: "OD2" },
-      { source: "CH1", target: "BS1" },
-      { source: "BS2", target: "CH2" },
-      { source: "BS2", target: "BS1" },
-    ],
-  };
 
   // the graph configuration, just override the ones you need
   const myConfig = {
@@ -101,10 +108,11 @@ export default function Dashboard(props) {
     return (
       <div>
         <Header />
+
         <div className="App">
           <h1>Network</h1>
           <button className="btn ">
-            <a href="/add/ordinarynode">Generate New Base Station Node</a>
+            <a href="/add/basestation">Generate New Base Station Node</a>
           </button>
           <button className="btn ">
             <a href="/add/clusternode">Add New Cluster Node</a>
@@ -114,7 +122,7 @@ export default function Dashboard(props) {
           </button>
           <Graph
             id="graph-id" // id is mandatory
-            data={data}
+            data={{ nodes: nodes, links: links }}
             config={myConfig}
           // onClickNode={onClickNode}
           // onClickLink={onClickLink}
