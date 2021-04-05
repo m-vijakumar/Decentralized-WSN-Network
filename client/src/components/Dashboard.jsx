@@ -33,6 +33,7 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
+    // getNetwork()
     setSpinner(false);
 
   }, []);
@@ -53,12 +54,22 @@ export default function Dashboard(props) {
 
           await props.contract.methods.getClusterNodes(basename).call()
             .then(async (result) => {
-              result.map((clustername) => {
+              result.map(async (clustername) => {
                 console.log("clustername", clustername)
                 console.log("basename", clustername)
 
                 setNodes(nodes => [...nodes, { id: basename + "  " + clustername, color: "green", size: 500 }])
                 setLinks(links => [...links, { source: basename, target: basename + "  " + clustername }])
+
+                await props.contract.methods.getOrdinaynode(basename, clustername).call()
+                  .then(async (r) => {
+                    r.map((deviceName) => {
+
+                      setNodes(nodes => [...nodes, { id: basename + "  " + clustername + " " + deviceName }])
+                      setLinks(links => [...links, { source: basename + "  " + clustername, target: basename + "  " + clustername + " " + deviceName }])
+
+                    })
+                  })
 
               })
 
@@ -82,7 +93,7 @@ export default function Dashboard(props) {
     nodeHighlightBehavior: true,
     node: {
       color: "lightgreen",
-      size: 220,
+      size: 550,
       highlightStrokeColor: "blue",
     },
     link: {
@@ -127,7 +138,7 @@ export default function Dashboard(props) {
           // onClickNode={onClickNode}
           // onClickLink={onClickLink}
           />
-          ;
+
         </div>
         <button onClick={getNetwork}>onclick</button>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Dropdown, DropdownButton, InputGroup } from 'react-bootstrap'
 import Header from './Header'
 export default function ClusterNode(props) {
@@ -13,11 +13,18 @@ export default function ClusterNode(props) {
     const init = async () => {
 
         console.log("contract", contract)
-        const res = await contract.methods.getBaseStations().call();
+        const res = await props.contract.methods.getBaseStations().call();
         setBaseStations(res);
         console.log(res)
         setDisplayDropBox(true)
     }
+
+    useCallback(
+        () => {
+            init();
+        },
+        [props]
+    )
 
 
 
@@ -38,9 +45,9 @@ export default function ClusterNode(props) {
         if (formData.bsname == null) {
             alert("enter Base Station Name");
         } else {
-            await props.contract.methods.verifyClusterNode(formData.bsname, formData.cnname).estimateGas(async (err, r) => {
+            await props.contract.methods.Request_of_Registration(formData.bsname, formData.cnname).estimateGas(async (err, r) => {
 
-                await props.contract.methods.verifyClusterNode(formData.bsname, formData.cnname).send({ from: props.account[0], gas: r }, (err, result) => {
+                await props.contract.methods.Request_of_Registration(formData.bsname, formData.cnname).send({ from: props.account[0], gas: r }, (err, result) => {
                     console.log(result)
                 });
                 const res = await props.contract.methods.getClusterNodes(formData.bsname).call();
