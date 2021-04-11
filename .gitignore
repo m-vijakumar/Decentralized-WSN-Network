@@ -4,9 +4,13 @@
 
 /.crt
 
+/.key
+
 node_modules
 
 .env
+.crt
+.key
 
 *.env
 
@@ -18,5 +22,20 @@ node_modules
 *pem
 
 *.key
+
+/*.env
+
+/*.crt
+
+/*.pem.key
+/*.pem.crt
+
+/*pem
+
+/*.key
+
+aws
+
+/aws
 
 D:\Blockchain\react-truffle\server\aws\private.pem.key
