@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Header from './Header';
 
 export default function BaseStation(props) {
 
@@ -16,7 +17,7 @@ export default function BaseStation(props) {
         } else {
             await props.contract.methods.Request_of_Registration(bsname).estimateGas(async (err, r) => {
 
-                await props.contract.methods.Request_of_Registration(bsname).send({ from: props.account[0], gas: r + 100 }, (err, result) => {
+                await props.contract.methods.Request_of_Registration(bsname).send({ from: props.account[0], gas: r + 1000 }, (err, result) => {
                     console.log(result)
                 });
                 const res = await props.contract.methods.getBaseStations().call();
@@ -26,10 +27,19 @@ export default function BaseStation(props) {
     }
     return (
         <div>
-            <form onSubmit={addNewBaseStaion}>
-                <input type="text" name="BSname" onChange={handleChange} />
-                <input type="submit" name="Add New BaseStaion" />
-            </form>
+            <Header />
+
+            <div className="container justify-content-md-center col-sm-4" >
+                <form style={{ textAlign: 'left' }} onSubmit={addNewBaseStaion}>
+                    <div class="form-group">
+                        <label >Device Name</label>
+                        <input type="name" class="form-control" name="bsname" onChange={handleChange} placeholder="Base Station Name" required />
+                    </div>
+                    <br />
+                    <button type="submit" className="btn btn-secondary ">Add Device</button>
+                </form>
+            </div>
+
         </div>
     )
 }

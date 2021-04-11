@@ -147,9 +147,24 @@ contract BaseStation is ClusterHeadNode {
      
   }
   
+  function Request_of_Connection(string memory  _basename , string memory _clustername, string memory  _devicename , string memory _device2 )public{
+      
+      if(verifyClusterNode(_basename, _clustername) == true){
+          if(Request_of_Verify(_basename , _clustername, _devicename)== true){
+              //drgxdfgf
+          }
+      }
+  }
     
     //genrate public key and private key 
+
+    
     
     // hash device id
+
+    function device_Hash(string memory _deviceID) returns(bytes32 memory hash_id){
+
+        bytes32 hash_Id = keccak256(_deviceID);
+    }
 
 }

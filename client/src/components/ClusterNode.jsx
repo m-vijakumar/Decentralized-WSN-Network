@@ -65,7 +65,8 @@ export default function ClusterNode(props) {
 
             <form onChange={handleChange} onSubmit={addClusterNode}>
 
-                <select name="bsname" style={{ display: displayDropBox ? "" : "none" }}>
+                <select name="bsname" className="btn btn-success" style={{ display: displayDropBox ? "" : "none" }}>
+                    <option selected value="" >Select BaseStation</option>
                     {displayBaseStations}
                 </select>
 
