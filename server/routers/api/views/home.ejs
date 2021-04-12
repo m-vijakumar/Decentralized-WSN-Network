@@ -1,9 +1,14 @@
-import Web3 from "web3";
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>IQT</title>
+  </head>
 
-const getWeb3 = () =>
-  new Promise((resolve, reject) => {
-    // Wait for loading completion to avoid race conditions with web3 injection timing.
-    window.addEventListener("load", async () => {
+  <script>
+    const getWeb3 = async () => {
       // Modern dapp browsers...
       if (window.ethereum) {
         const web3 = new Web3(window.ethereum);
@@ -27,13 +32,29 @@ const getWeb3 = () =>
       // Fallback to localhost; use dev console port by default...
       else {
         const provider = new Web3.providers.HttpProvider(
-          "http://127.0.0.1:7545"
+          "http://127.0.0.1:7575"
         );
         const web3 = new Web3(provider);
         console.log("No web3 instance injected, using Local web3.");
         resolve(web3);
       }
-    });
-  });
+    };
+  </script>
+  <body onload="getWeb3()">
+    <br />
+    <center>
+      <div>getWeb3()</div>
+      <br />
 
-export default getWeb3;
+      <div>
+        <form method="get" action="/test/start/cpp ">
+          <input type="submit" class="btn btn-info" value="Cpp Test " />
+        </form>
+        <br />
+        <form method="get" action="/test/start/java ">
+          <input type="submit" class="btn btn-info" value="Java Test " />
+        </form>
+      </div>
+    </center>
+  </body>
+</html>

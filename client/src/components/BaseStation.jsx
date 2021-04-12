@@ -32,11 +32,11 @@ export default function BaseStation(props) {
             <div className="container justify-content-md-center col-sm-4" >
                 <form style={{ textAlign: 'left' }} onSubmit={addNewBaseStaion}>
                     <div class="form-group">
-                        <label >Device Name</label>
+                        <label >Base Station Name</label>
                         <input type="name" class="form-control" name="bsname" onChange={handleChange} placeholder="Base Station Name" required />
                     </div>
                     <br />
-                    <button type="submit" className="btn btn-secondary ">Add Device</button>
+                    <button type="submit" className="btn btn-secondary ">Genrate New BaseStation</button>
                 </form>
             </div>
 
