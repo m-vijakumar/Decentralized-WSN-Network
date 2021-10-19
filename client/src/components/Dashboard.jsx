@@ -140,7 +140,7 @@ export default function Dashboard(props) {
           />
 
         </div>
-        <button onClick={getNetwork}>onclick</button>
+        <button onClick={getNetwork} className="btn btn-secondary">get Netwotk</button>
       </div>
     );
   }

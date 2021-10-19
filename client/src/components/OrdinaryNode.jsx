@@ -11,14 +11,23 @@ export default function OrdinaryNode(props) {
     const [contract, setContract] = useState(props.contract);
     const [account, setAccount] = useState(props.account);
 
-    const init = async () => {
+    const verifyDeviceAddress = async () => {
 
+        const response = await fetch("http://127.0.0.1:5000");
+        const data = await response.json();
+        console.log("data", data)
+    }
+
+    const init = async () => {
+        // verifyDeviceAddress()
         console.log("contract", contract)
         const res = await contract.methods.getBaseStations().call();
         setBaseStations(res);
 
 
     }
+
+
 
     const getClusterNodes = async (e) => {
 
@@ -85,7 +94,7 @@ export default function OrdinaryNode(props) {
             <div className="App">
                 <Header />
                 <br />
-                <button onClick={init}>sdfssdf</button>
+                <button onClick={init} className="btn btn-secondary">get Data</button>
                 <div className="container justify-content-md-center col-sm-4" >
                     <form style={{ textAlign: 'left' }} onChange={handleChange} onSubmit={addOrdinaryNode}>
                         <div class="form-group">

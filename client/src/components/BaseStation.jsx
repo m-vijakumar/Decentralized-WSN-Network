@@ -28,7 +28,7 @@ export default function BaseStation(props) {
     return (
         <div>
             <Header />
-
+            <br /><br />
             <div className="container justify-content-md-center col-sm-4" >
                 <form style={{ textAlign: 'left' }} onSubmit={addNewBaseStaion}>
                     <div class="form-group">

@@ -60,21 +60,30 @@ export default function ClusterNode(props) {
     return (
         <div className="App">
             <Header />
-            <br />
-            <button className="btn btn-success " style={{ display: displayDropBox ? "none" : "" }} onClick={init}> GetBaseStations</button>
+            <br /><br />
 
-            <form onChange={handleChange} onSubmit={addClusterNode}>
 
-                <select name="bsname" className="btn btn-success" style={{ display: displayDropBox ? "" : "none" }}>
-                    <option selected value="" >Select BaseStation</option>
-                    {displayBaseStations}
-                </select>
+            <div className="container justify-content-md-center col-sm-4" >
 
-                <br></br>
-                <input type="text" name="cnname" />
+                <form onChange={handleChange} onSubmit={addClusterNode}>
 
-                <button className="btn btn-success " type="submit"> Add Cluster Node </button>
-            </form>
+
+
+                    <div class="form-group" style={{ textAlign: 'left' }}>
+                        <label >Cluster Name</label>
+                        <input type="name" class="form-control" name="cnname" placeholder="Cluster Name" required />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <button className="btn btn-success " style={{ display: displayDropBox ? "none" : "" }} onClick={init}> Get BaseStations</button>
+                        <select name="bsname" className="btn btn-success" style={{ display: displayDropBox ? "" : "none" }}>
+                            <option selected value="" >Select BaseStation</option>
+                            {displayBaseStations}
+                        </select>
+                    </div>
+                    <button className="btn btn-success " type="submit"> Add Cluster Node </button>
+                </form>
+            </div>
 
 
         </div >

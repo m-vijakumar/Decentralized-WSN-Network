@@ -1,10 +1,10 @@
-import React, {useEffect, useState }  from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function Home() {
 
-    const [isSpinner,setSpinner] =useState(true);
+    const [isSpinner, setSpinner] = useState(true);
 
-    useEffect( () => {
+    useEffect(() => {
 
         // await fetch('/auth'
 
@@ -14,20 +14,20 @@ export default function Home() {
 
     if (isSpinner) {
         return (
-          <div className="spinner-border" role="status" id="spinner">
-            <span className="sr-only">Loading...</span>
-          </div>
+            <div className="spinner-border" role="status" id="spinner">
+                <span className="sr-only">Loading...</span>
+            </div>
         )
-    }else{
+    } else {
 
-            return (
-                <div className="App">
+        return (
+            <div className="App" style={{ background: "https://www.ledgerinsights.com/wp-content/uploads/2020/09/blockchain-network.2.jpg" }}>
                 <br /> <br />
-                    <h1>Welcome </h1>
-        
-                    <p ><a href="/Register">Register</a>  /  <a href="/login">  Login</a></p> 
-                </div>
-            )
-        }
-   
+                <h1>Welcome </h1>
+
+                <p > <a href="/login">  Login</a></p>
+            </div>
+        )
+    }
+
 }
